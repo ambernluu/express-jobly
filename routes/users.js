@@ -118,5 +118,14 @@ router.delete("/:username", ensureAdminOrCorrectUser, async function (req, res, 
   }
 });
 
-
+//POST apply for job (that user or admin)
+router.post("/:username/jobs/:id", ensureAdminOrCorrectUser, async function (req, res, next) {
+  try {
+    const jobId = + req.params.id;
+    await User.applyForJob(req.params.username, jobId);
+    return res.json({ applied: jobId });
+  } catch (err) {
+    return next(err);
+  }
+})
 module.exports = router;
